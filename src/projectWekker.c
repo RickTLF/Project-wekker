@@ -14,10 +14,11 @@
 
 // TODO: insert other definitions and declarations here
 
-
 int main(void) {
+	displayInit();
 
     while(1) {
+    	testLedDisplay();
 
     }
     return 0 ;

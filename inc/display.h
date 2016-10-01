@@ -8,6 +8,7 @@
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
-
+void displayInit(void);
+void testLedDisplay(void);
 
 #endif /* DISPLAY_H_ */
