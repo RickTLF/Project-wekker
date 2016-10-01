@@ -10,7 +10,8 @@ C_SRCS += \
 ../src/irSensor.c \
 ../src/projectWekker.c \
 ../src/realTimeClock.c \
-../src/speaker.c 
+../src/speaker.c \
+../src/timer.c 
 
 OBJS += \
 ./src/cr_startup_lpc175x_6x.o \
@@ -19,7 +20,8 @@ OBJS += \
 ./src/irSensor.o \
 ./src/projectWekker.o \
 ./src/realTimeClock.o \
-./src/speaker.o 
+./src/speaker.o \
+./src/timer.o 
 
 C_DEPS += \
 ./src/cr_startup_lpc175x_6x.d \
@@ -28,7 +30,8 @@ C_DEPS += \
 ./src/irSensor.d \
 ./src/projectWekker.d \
 ./src/realTimeClock.d \
-./src/speaker.d 
+./src/speaker.d \
+./src/timer.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
