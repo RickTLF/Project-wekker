@@ -14,6 +14,7 @@
 
 unsigned int counter = 0;
 unsigned int x = 0;
+unsigned char toggle = 0;	//used to create lines of leds on and off
 
 void writeDisplay(unsigned char pin, unsigned char value);
 
@@ -52,38 +53,37 @@ void writeDisplay(unsigned char pin, unsigned char value) {
  * TODO: Arther must implement methods to get the display fully functioning
  */
 void testLedDisplay(void) {
-	writeDisplay(H_RST, 1);
+	writeDisplay(H_RST, 1);					//make sure Horizontal reset is inactive (low active)
 
-	if (counter < 8) {
-		while (x < 10) {
-			writeDisplay(H_DATA, 0);
-			writeDisplay(H_CLK, 1);
+	if (counter < 8) {						//as long as not every row is written
+		toggle = 0;							//force toggle to zero
+		while (x < 25) {					//fore every led (25 total)
+			if(toggle){
+				toggle = 0;					//toggle toggle
+				writeDisplay(H_DATA, 0);	//set led on (low active)
+			}
+			else{
+				toggle = 1;					//toggle toggle
+				writeDisplay(H_DATA, 1);	//set led off (low active)
+			}
+			writeDisplay(H_CLK, 1);			//pulse horizontal clock (shift registers)
 			writeDisplay(H_CLK, 0);
 
-			x++;
+			x++;							//increment led counter
 		}
 
-		while ((x > 9) && (x < 25)) {
-			writeDisplay(H_DATA, 0);
-			writeDisplay(H_CLK, 1);
-			writeDisplay(H_CLK, 0);
-
-			x++;
-
-		}
-
-		writeDisplay(H_STO, 0);
+		writeDisplay(H_STO, 0);				//pulse horizontal storage
 		writeDisplay(H_STO, 1);
-		writeDisplay(H_RST, 0);
+		writeDisplay(H_RST, 0);				//pulse horizontal reset
 		writeDisplay(H_RST, 1);
 
-		x = 0;
-		counter++;
-		writeDisplay(V_CLK, 1);
+		x = 0;								//reset led counter
+		counter++;							//increment row counter
+		writeDisplay(V_CLK, 1);				//pulse vertical clock
 		writeDisplay(V_CLK, 0);
-	} else {
-		writeDisplay(V_RST, 1);
+	} else {								//else (every row is written)
+		writeDisplay(V_RST, 1);				//pulse vertical reset
 		writeDisplay(V_RST, 0);
-		counter = 0;
+		counter = 0;						//reset row counter
 	}
 }

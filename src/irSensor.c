@@ -54,6 +54,7 @@ unsigned int getPreviousBit(unsigned char index, unsigned int byte) {
 // ______|~889  |_
 //
 //*****************************************************************************
+
 void irSensorAddPreviousBit(void) {
 	if ((readTimer() >= 700) && (readTimer() <= 1100)) {
 

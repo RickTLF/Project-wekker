@@ -12,7 +12,7 @@
 #define I2C0MMCTRL 			(*(unsigned int *) 0x4001C01C) 		// monitor mode
 #define I2C0ADR1			(*(unsigned int *) 0x4001C020) 		// not used
 #define I2C0ADR2 			(*(unsigned int *) 0x4001C024) 		// not used
-#define I2C0DATA_ BUFFER 	(*(unsigned int *) 0x4001C02C) 		// buffer, receives ack/nack + bits of I2DAT
+#define I2C0DATA_ 		 	(*(unsigned int *) 0x4001C02C) 		// buffer, receives ack/nack + bits of I2DAT
 #define I2C0MASK0			(*(unsigned int *) 0x4001C030) 		// determine address match
 
 // TODO: add pins through PINSEL ... etc.
