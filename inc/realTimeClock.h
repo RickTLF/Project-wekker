@@ -8,6 +8,6 @@
 #ifndef REALTIMECLOCK_H_
 #define REALTIMECLOCK_H_
 
-
+void i2cInit(void);
 
 #endif /* REALTIMECLOCK_H_ */

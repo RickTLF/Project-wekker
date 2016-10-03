@@ -168,17 +168,32 @@ Discarded input sections
  .text          0x00000000        0x0 ./src/realTimeClock.o
  .data          0x00000000        0x0 ./src/realTimeClock.o
  .bss           0x00000000        0x0 ./src/realTimeClock.o
+ .text.masterTransmitByte
+                0x00000000       0x38 ./src/realTimeClock.o
+ .text.masterTransmitData
+                0x00000000       0x1c ./src/realTimeClock.o
+ .text.masterReadByte
+                0x00000000       0x24 ./src/realTimeClock.o
+ .text.loadSlaveAddress
+                0x00000000       0x2c ./src/realTimeClock.o
+ .text.clearSiBit
+                0x00000000       0x1c ./src/realTimeClock.o
+ .text.clearStartFlag
+                0x00000000       0x1c ./src/realTimeClock.o
+ .text.masterReadData
+                0x00000000       0x1c ./src/realTimeClock.o
  .text.i2cInit  0x00000000       0x3c ./src/realTimeClock.o
  .text.transmitStart
-                0x00000000       0x28 ./src/realTimeClock.o
- .text.transmitStop
-                0x00000000       0x28 ./src/realTimeClock.o
- .text.clearI2CInterrupt
                 0x00000000       0x1c ./src/realTimeClock.o
+ .text.assertAck
+                0x00000000       0x1c ./src/realTimeClock.o
+ .text.assertNotAck
+                0x00000000        0xc ./src/realTimeClock.o
+ .text.addData  0x00000000       0x20 ./src/realTimeClock.o
+ .text.transmitStopCondition
+                0x00000000        0xc ./src/realTimeClock.o
  .text.getI2CStatus
                 0x00000000       0x18 ./src/realTimeClock.o
- .text.transmitI2CData
-                0x00000000       0x20 ./src/realTimeClock.o
  .text.getI2CData
                 0x00000000       0x18 ./src/realTimeClock.o
  .text.setHighTimePeriod
@@ -190,25 +205,23 @@ Discarded input sections
  .text          0x00000000        0x0 ./src/speaker.o
  .data          0x00000000        0x0 ./src/speaker.o
  .bss           0x00000000        0x0 ./src/speaker.o
- .text.spGetTimerValue
-                0x00000000       0x10 ./src/speaker.o
  .text.spTimerResetInterrupt
                 0x00000000        0xc ./src/speaker.o
  .text.increaseVolume
                 0x00000000       0x14 ./src/speaker.o
  .text.decreaseVolume
                 0x00000000       0x14 ./src/speaker.o
- .debug_info    0x00000000       0xa2 ./src/speaker.o
- .debug_abbrev  0x00000000       0x95 ./src/speaker.o
+ .debug_info    0x00000000       0x86 ./src/speaker.o
+ .debug_abbrev  0x00000000       0x7b ./src/speaker.o
  .debug_aranges
-                0x00000000       0x38 ./src/speaker.o
- .debug_ranges  0x00000000       0x28 ./src/speaker.o
+                0x00000000       0x30 ./src/speaker.o
+ .debug_ranges  0x00000000       0x20 ./src/speaker.o
  .debug_macro   0x00000000       0x1b ./src/speaker.o
  .debug_macro   0x00000000      0x874 ./src/speaker.o
- .debug_line    0x00000000       0xc8 ./src/speaker.o
- .debug_str     0x00000000     0x24f6 ./src/speaker.o
+ .debug_line    0x00000000       0xba ./src/speaker.o
+ .debug_str     0x00000000     0x24d3 ./src/speaker.o
  .comment       0x00000000       0x71 ./src/speaker.o
- .debug_frame   0x00000000       0xa0 ./src/speaker.o
+ .debug_frame   0x00000000       0x80 ./src/speaker.o
  .ARM.attributes
                 0x00000000       0x33 ./src/speaker.o
  .group         0x00000000        0x8 ./src/timer.o
@@ -699,21 +712,21 @@ END GROUP
                 0xefff74c6                PROVIDE (__valid_user_code_checksum, (0x0 - ((((((_vStackTop + (ResetISR + 0x1)) + (NMI_Handler + 0x1)) + (HardFault_Handler + 0x1)) + (DEFINED (MemManage_Handler)?MemManage_Handler:0x0 + 0x1)) + (DEFINED (BusFault_Handler)?BusFault_Handler:0x0 + 0x1)) + (DEFINED (UsageFault_Handler)?UsageFault_Handler:0x0 + 0x1))))
 OUTPUT(Project-wekker.axf elf32-littlearm)
 
-.debug_info     0x00000000      0x556
+.debug_info     0x00000000      0x675
  .debug_info    0x00000000      0x24e ./src/cr_startup_lpc175x_6x.o
  .debug_info    0x0000024e       0xbd ./src/display.o
  .debug_info    0x0000030b       0x69 ./src/projectWekker.o
- .debug_info    0x00000374      0x11c ./src/realTimeClock.o
- .debug_info    0x00000490       0xc6 ./src/timer.o
+ .debug_info    0x00000374      0x23b ./src/realTimeClock.o
+ .debug_info    0x000005af       0xc6 ./src/timer.o
 
-.debug_abbrev   0x00000000      0x2fa
+.debug_abbrev   0x00000000      0x314
  .debug_abbrev  0x00000000       0xf5 ./src/cr_startup_lpc175x_6x.o
  .debug_abbrev  0x000000f5       0xac ./src/display.o
  .debug_abbrev  0x000001a1       0x47 ./src/projectWekker.o
- .debug_abbrev  0x000001e8       0x7d ./src/realTimeClock.o
- .debug_abbrev  0x00000265       0x95 ./src/timer.o
+ .debug_abbrev  0x000001e8       0x97 ./src/realTimeClock.o
+ .debug_abbrev  0x0000027f       0x95 ./src/timer.o
 
-.debug_aranges  0x00000000      0x188
+.debug_aranges  0x00000000      0x1c8
  .debug_aranges
                 0x00000000       0x80 ./src/cr_startup_lpc175x_6x.o
  .debug_aranges
@@ -721,18 +734,18 @@ OUTPUT(Project-wekker.axf elf32-littlearm)
  .debug_aranges
                 0x000000b0       0x20 ./src/projectWekker.o
  .debug_aranges
-                0x000000d0       0x68 ./src/realTimeClock.o
+                0x000000d0       0xa8 ./src/realTimeClock.o
  .debug_aranges
-                0x00000138       0x50 ./src/timer.o
+                0x00000178       0x50 ./src/timer.o
 
-.debug_ranges   0x00000000      0x138
+.debug_ranges   0x00000000      0x178
  .debug_ranges  0x00000000       0x70 ./src/cr_startup_lpc175x_6x.o
  .debug_ranges  0x00000070       0x20 ./src/display.o
  .debug_ranges  0x00000090       0x10 ./src/projectWekker.o
- .debug_ranges  0x000000a0       0x58 ./src/realTimeClock.o
- .debug_ranges  0x000000f8       0x40 ./src/timer.o
+ .debug_ranges  0x000000a0       0x98 ./src/realTimeClock.o
+ .debug_ranges  0x00000138       0x40 ./src/timer.o
 
-.debug_macro    0x00000000      0xc7a
+.debug_macro    0x00000000      0xc86
  .debug_macro   0x00000000       0x1d ./src/cr_startup_lpc175x_6x.o
  .debug_macro   0x0000001d      0x874 ./src/cr_startup_lpc175x_6x.o
  .debug_macro   0x00000891       0x57 ./src/display.o
@@ -741,26 +754,26 @@ OUTPUT(Project-wekker.axf elf32-littlearm)
  .debug_macro   0x000009e1       0x10 ./src/projectWekker.o
  .debug_macro   0x000009f1      0x12d ./src/projectWekker.o
  .debug_macro   0x00000b1e       0xa0 ./src/projectWekker.o
- .debug_macro   0x00000bbe       0x6b ./src/realTimeClock.o
- .debug_macro   0x00000c29       0x51 ./src/timer.o
+ .debug_macro   0x00000bbe       0x77 ./src/realTimeClock.o
+ .debug_macro   0x00000c35       0x51 ./src/timer.o
 
-.debug_line     0x00000000      0x59d
+.debug_line     0x00000000      0x633
  .debug_line    0x00000000       0xd4 ./src/cr_startup_lpc175x_6x.o
  .debug_line    0x000000d4       0xeb ./src/display.o
  .debug_line    0x000001bf      0x1f7 ./src/projectWekker.o
- .debug_line    0x000003b6       0xe6 ./src/realTimeClock.o
- .debug_line    0x0000049c      0x101 ./src/timer.o
+ .debug_line    0x000003b6      0x17c ./src/realTimeClock.o
+ .debug_line    0x00000532      0x101 ./src/timer.o
 
-.debug_str      0x00000000     0x3842
+.debug_str      0x00000000     0x38f8
  .debug_str     0x00000000     0x2638 ./src/cr_startup_lpc175x_6x.o
                                0x264b (size before relaxing)
  .debug_str     0x00002638      0x129 ./src/display.o
                                0x25b1 (size before relaxing)
  .debug_str     0x00002761      0xc19 ./src/projectWekker.o
                                0x30cf (size before relaxing)
- .debug_str     0x0000337a      0x30a ./src/realTimeClock.o
-                               0x2785 (size before relaxing)
- .debug_str     0x00003684      0x1be ./src/timer.o
+ .debug_str     0x0000337a      0x3c0 ./src/realTimeClock.o
+                               0x283b (size before relaxing)
+ .debug_str     0x0000373a      0x1be ./src/timer.o
                                0x2654 (size before relaxing)
 
 .comment        0x00000000       0x70
@@ -865,9 +878,9 @@ OUTPUT(Project-wekker.axf elf32-littlearm)
  .ARM.attributes
                 0x00000636       0x21 c:/nxp/lpcxpresso_7.9.2_493/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libcr_semihost.a(__sys_write.o)
 
-.debug_frame    0x00000000      0x46c
+.debug_frame    0x00000000      0x58c
  .debug_frame   0x00000000      0x170 ./src/cr_startup_lpc175x_6x.o
  .debug_frame   0x00000170       0x74 ./src/display.o
  .debug_frame   0x000001e4       0x2c ./src/projectWekker.o
- .debug_frame   0x00000210      0x168 ./src/realTimeClock.o
- .debug_frame   0x00000378       0xf4 ./src/timer.o
+ .debug_frame   0x00000210      0x288 ./src/realTimeClock.o
+ .debug_frame   0x00000498       0xf4 ./src/timer.o

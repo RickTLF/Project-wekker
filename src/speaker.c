@@ -1,8 +1,8 @@
 #include "speaker.h"
 
-unsigned short spGetTimerValue(void) {
+/*unsigned short spGetTimerValue(void) {
 
-}
+}*/
 
 void spTimerResetInterrupt(void) {
 
