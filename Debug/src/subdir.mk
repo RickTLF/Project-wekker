@@ -7,6 +7,7 @@ C_SRCS += \
 ../src/cr_startup_lpc175x_6x.c \
 ../src/crp.c \
 ../src/display.c \
+../src/gpioPort0.c \
 ../src/irSensor.c \
 ../src/projectWekker.c \
 ../src/realTimeClock.c \
@@ -17,6 +18,7 @@ OBJS += \
 ./src/cr_startup_lpc175x_6x.o \
 ./src/crp.o \
 ./src/display.o \
+./src/gpioPort0.o \
 ./src/irSensor.o \
 ./src/projectWekker.o \
 ./src/realTimeClock.o \
@@ -27,6 +29,7 @@ C_DEPS += \
 ./src/cr_startup_lpc175x_6x.d \
 ./src/crp.d \
 ./src/display.d \
+./src/gpioPort0.d \
 ./src/irSensor.d \
 ./src/projectWekker.d \
 ./src/realTimeClock.d \

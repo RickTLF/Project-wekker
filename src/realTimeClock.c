@@ -14,22 +14,24 @@
  *
 *****************************************************************************/
 
-#define PCONP 		(*(unsigned int *) 0x400FC0C4)				// power
-#define PCLKSEL0	(*(unsigned int *) 0x400FC1A8)				// clock
-#define ISER0 		(*(unsigned int *) 0xE000E100)				// interrupt
+#include "realTimeClock.h"
 
-#define I2C0CONSET 			(*(unsigned int *) 0x4001C000) 		// control set
-#define I2C0STAT			(*(unsigned int *) 0x4001C004) 		// status
-#define I2C0DAT 			(*(unsigned int *) 0x4001C008) 		// data
-#define I2C0ADR0 			(*(unsigned int *) 0x4001C00C) 		// slave address
-#define I2C0SCLH 			(*(unsigned int *) 0x4001C010) 		// SCH duty cycle (high time)
-#define I2C0SCLL			(*(unsigned int *) 0x4001C014) 		// SCL duty cycle (low time)
-#define I2C0CONCLR 			(*(unsigned int *) 0x4001C018) 		// clear
-#define I2C0MMCTRL 			(*(unsigned int *) 0x4001C01C) 		// monitor mode
-#define I2C0ADR1			(*(unsigned int *) 0x4001C020) 		// not used
-#define I2C0ADR2 			(*(unsigned int *) 0x4001C024) 		// not used
-#define I2C0DATA_BUFFER	 	(*(unsigned int *) 0x4001C02C) 		// buffer, receives ack/nack + bits of I2DAT
-#define I2C0MASK0			(*(unsigned int *) 0x4001C030) 		// determine address match
+#define PCONP 		(*(unsigned int *) 0x400FC0C4)				// power
+#define PCLKSEL1	(*(unsigned int *) 0x400FC1AC)				// clock
+#define PINSEL0 	(*(unsigned int *) 0x4002C000)				// pin function
+#define ISER0 		(*(unsigned int *) 0xE000E100)				// interrupt
+#define PINMODE0 	(*(unsigned int *) 0x4002C040)				// select pin mode
+#define PINMODE_OD0	(*(unsigned int *) 0x4002C068)				// select open drain mode
+
+// TODO: change the names and registers according to I2C1
+#define I2C1CONSET 			(*(unsigned int *) 0x4005C000) 		// control set
+#define I2C1STAT			(*(unsigned int *) 0x4005C004) 		// status
+#define I2C1DAT 			(*(unsigned int *) 0x4005C008) 		// data
+#define I2C1SCLH 			(*(unsigned int *) 0x4005C010) 		// SCH duty cycle (high time)
+#define I2C1SCLL			(*(unsigned int *) 0x4005C014) 		// SCL duty cycle (low time)
+#define I2C1CONCLR 			(*(unsigned int *) 0x4005C018) 		// clear
+#define I2C1DATA_BUFFER	 	(*(unsigned int *) 0x4005C02C) 		// buffer, receives ack/nack + bits of I2DAT
+#define I2C1MASK0			(*(unsigned int *) 0x4005C030) 		// determine address match
 
 #define READ				1
 #define WRITE				0
@@ -39,22 +41,41 @@
 // TODO: implement methods to easily control rtc
 
 // TODO: add prototypes here
-void masterTransmitByte(unsigned char address, unsigned char byte);
 void masterTransmitData(unsigned char address, unsigned char data);
 void masterReadByte(unsigned char address);
-void loadSlaveAddress(unsigned char address, unsigned char readWriteBit);
-void clearSiBit(void);
-void clearStartFlag(void);
 void masterReadData(unsigned char sendStop, unsigned char cntBytes);
-void transmitStart(void);
 void assertAck(void);
 void assertNotAck(void);
 void addData(unsigned char data);
 void transmitStopCondition(void);
-unsigned char getI2CStatus(void);
 unsigned char getI2CData(void);
 void setHighTimePeriod(unsigned char time);
 void setLowTimePeriod(unsigned char time);
+
+//*****************************************************************************
+// I2C IMPLEMENTATION
+
+/* For testing purposes, I2C 1 is used.
+ * Use pin J6-9 as SDA and pin J6-10 as SCL
+ */
+//*****************************************************************************
+
+
+void i2cInit(void) {
+	// power I2C1 interface clock
+	PCONP |= (1 << 19);
+	// select clock: PCLK
+	PCLKSEL1 |= (1 << 6);
+	// select pins through PINSEL (no pull-up, no pull down) and pinmode od (open drain)
+	PINSEL0 |= 0xF;	// Selecting functions SDA1 and SCL1
+	PINMODE0 |= (1 << 1) | (1 << 3); // no pull up, no pull down
+	PINMODE_OD0 |= (1 << 0) | (1 << 1); // set open drain mode
+	// Enable the I2C1 interrupt
+	ISER0 |= (1 << 11);
+	// Set clock frequency
+	setHighTimePeriod(100);
+	setLowTimePeriod(100);
+}
 
 //*****************************************************************************
 //
@@ -65,15 +86,19 @@ void setLowTimePeriod(unsigned char time);
 //
 //*****************************************************************************
 
+void enableI2C(void) {
+	I2C1CONSET |= 0x40;
+}
+
 void masterTransmitByte(unsigned char address, unsigned char byte) {
 	// enable I2C
-	I2C0CONSET |= (1 << 6);
+	I2C1CONSET |= 0x40;
 	// clear SI bit
-	clearSiBit();
+	// clearSiBit();
 	// load slave address and set data direction bit
-	loadSlaveAddress(address, WRITE);
+	// loadSlaveAddress(address, WRITE);
 	// clear STA flag
-	clearStartFlag();
+	// clearStartFlag();
 	/* after each byte is transmitted,
 	 * an acknowledge bit is received */
 	// TODO: add actions for receiving ack
@@ -86,6 +111,7 @@ void masterTransmitData(unsigned char address, unsigned char data) {
 //*****************************************************************************
 //*****************************************************************************
 
+/*
 void masterReadByte(unsigned char address) {
 	// master always transmits a start condition
 	transmitStart();
@@ -93,7 +119,7 @@ void masterReadByte(unsigned char address) {
 	loadSlaveAddress(address, READ);
 	// clear the SI bit
 	clearSiBit();
-}
+}*/
 
 //*****************************************************************************
 //
@@ -105,7 +131,7 @@ void masterReadByte(unsigned char address) {
 //*****************************************************************************
 
 void loadSlaveAddress(unsigned char address, unsigned char readWriteBit) {
-	I2C0DAT = (address << 1) | readWriteBit;
+	I2C1DAT = (address << 1) | readWriteBit;
 }
 
 //*****************************************************************************
@@ -124,11 +150,11 @@ void loadSlaveAddress(unsigned char address, unsigned char readWriteBit) {
 //*****************************************************************************
 
 void clearSiBit(void) {
-	I2C0CONCLR |= (1 << 3);
+	I2C1CONCLR |= (1 << 3);
 }
 
 void clearStartFlag(void) {
-	I2C0CONCLR |= (1 << 5);
+	I2C1CONCLR |= (1 << 5);
 }
 
 //*****************************************************************************
@@ -139,21 +165,15 @@ void masterReadData(unsigned char sendStop, unsigned char cntBytes) {
 
 }
 
-void i2cInit(void) {
-	// power I2C interface power/clock
-	PCONP |= (1 << 7);
-	// select clock: PCLK
-	PCLKSEL0 |= (1 << 14);
-	// select pins through PINSEL (no pull-up, no pull down) and pinmode od (open drain)
-
-	// Enable the I2C interrupt
-	ISER0 |= (1 << 10);
-}
-
+/*
 void transmitStart(void) {
 	// enable I2C and transmit start condition
-	I2C0CONSET |= (1 << 6) | (1 << 5);
+	I2C1CONSET |= (1 << 6) | (1 << 5);
+}*/
+void transmitStart(void) {
+	I2C1CONSET |= 0x20;
 }
+
 
 //*****************************************************************************
 //
@@ -163,7 +183,7 @@ void transmitStart(void) {
 //*****************************************************************************
 
 void assertAck(void) {
-	I2C0CONSET |= (1 << 2);
+	I2C1CONSET |= (1 << 2);
 }
 
 //*****************************************************************************
@@ -178,7 +198,7 @@ void assertNotAck(void) {
 }
 
 void addData(unsigned char data) {
-	I2C0DAT = data;
+	I2C1DAT = data;
 }
 
 //*****************************************************************************
@@ -197,24 +217,20 @@ void transmitStopCondition(void) {
 //*****************************************************************************
 
 unsigned char getI2CStatus(void) {
-	return I2C0STAT;
+	return I2C1STAT;
 }
 
 //*****************************************************************************
 //*****************************************************************************
 unsigned char getI2CData(void) {
-	return I2C0DAT;
+	return I2C1DAT;
 }
 
 
 void setHighTimePeriod(unsigned char time) {
-	I2C0SCLH = time;
+	I2C1SCLH = time;
 }
 
 void setLowTimePeriod(unsigned char time) {
-	I2C0SCLL = time;
-}
-
-void I2C0_IRQHandler(void) {
-
+	I2C1SCLL = time;
 }
